@@ -5,7 +5,7 @@ import 'package:theme_manager/src/controller/theme_bloc.dart';
 import 'package:theme_manager/src/src.dart';
 
 /// Wrap your app with this widget to use the theme bloc.
-class ThemeWrapperWidget extends StatefulWidget {
+class ThemeWrapperWidget extends StatelessWidget {
   const ThemeWrapperWidget({
     super.key,
     required this.builder,
@@ -17,10 +17,33 @@ class ThemeWrapperWidget extends StatefulWidget {
   ) builder;
 
   @override
-  State<ThemeWrapperWidget> createState() => _ThemeWrapperWidgetState();
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => ThemeBloc(),
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) =>
+              _ThemedWidget(builder: builder, state: state),
+        ),
+      );
 }
 
-class _ThemeWrapperWidgetState extends State<ThemeWrapperWidget> {
+class _ThemedWidget extends StatefulWidget {
+  const _ThemedWidget({
+    required this.builder,
+    required this.state,
+  });
+
+  final Widget Function(
+    BuildContext context,
+    ThemeState state,
+  ) builder;
+
+  final ThemeState state;
+
+  @override
+  State<_ThemedWidget> createState() => _ThemedWidgetState();
+}
+
+class _ThemedWidgetState extends State<_ThemedWidget> {
   @override
   void initState() {
     super.initState();
@@ -38,10 +61,5 @@ class _ThemeWrapperWidgetState extends State<ThemeWrapperWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        create: (context) => ThemeBloc(),
-        child: BlocBuilder<ThemeBloc, ThemeState>(
-          builder: widget.builder,
-        ),
-      );
+  Widget build(BuildContext context) => widget.builder(context, widget.state);
 }
