@@ -1,0 +1,27 @@
+name: theme_manager
+description: "Package for theme management"
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.4
+  hydrated_bloc: ^9.1.4
+  path_provider: ^2.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  dart_code_linter:
+    git:
+      url: https://github.com/The-Redhat/dart-code-linter.git
+      ref: fix_analyzer_6.0_errors
+  lint: ^2.3.0
+
+flutter:
