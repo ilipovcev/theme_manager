@@ -4,24 +4,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theme_manager/src/controller/theme_bloc.dart';
 import 'package:theme_manager/src/src.dart';
 
+typedef ThemeBuilder = Widget Function(BuildContext context, ThemeState state);
+
 /// Wrap your app with this widget to use the theme bloc.
 class ThemeWrapperWidget extends StatelessWidget {
   const ThemeWrapperWidget({
     super.key,
     required this.builder,
+    this.changeThemeBrightnessBySystemValue = false,
   });
 
-  final Widget Function(
-    BuildContext context,
-    ThemeState state,
-  ) builder;
+  final ThemeBuilder builder;
+  final bool changeThemeBrightnessBySystemValue;
 
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => ThemeBloc(),
         child: BlocBuilder<ThemeBloc, ThemeState>(
-          builder: (context, state) =>
-              _ThemedWidget(builder: builder, state: state),
+          builder: (context, state) => changeThemeBrightnessBySystemValue
+              ? _ThemedWidget(builder: builder, state: state)
+              : builder(context, state),
         ),
       );
 }
