@@ -11,19 +11,21 @@ class ThemeWrapperWidget extends StatelessWidget {
   const ThemeWrapperWidget({
     super.key,
     required this.builder,
+    this.textTheme,
     this.changeThemeBrightnessBySystemValue = false,
   });
 
+  final TextTheme? textTheme;
   final ThemeBuilder builder;
   final bool changeThemeBrightnessBySystemValue;
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-        create: (context) => ThemeBloc(),
+        create: (context) => ThemeBloc(
+          textTheme: textTheme,
+        ),
         child: BlocBuilder<ThemeBloc, ThemeState>(
-          builder: (context, state) => changeThemeBrightnessBySystemValue
-              ? _ThemedWidget(builder: builder, state: state)
-              : builder(context, state),
+          builder: (context, state) => changeThemeBrightnessBySystemValue ? _ThemedWidget(builder: builder, state: state) : builder(context, state),
         ),
       );
 }

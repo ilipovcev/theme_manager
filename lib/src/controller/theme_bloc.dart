@@ -62,11 +62,13 @@ part 'theme_state.dart';
 /// - ThemeEventChangeColorSeed: Event triggered when the color seed is changed.
 ///
 class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
-  ThemeBloc()
-      : super(
+  ThemeBloc({
+    this.textTheme,
+  }) : super(
           ThemeState(
             themeMode: ThemeMode.system,
             colorSeed: getRandomColor(),
+            textTheme: textTheme,
           ),
         ) {
     on<ThemeEventChangeThemeMode>(
@@ -82,8 +84,13 @@ class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
     );
   }
 
+  final TextTheme? textTheme;
+
   @override
-  ThemeState? fromJson(Map<String, dynamic> json) => ThemeState.fromMap(json);
+  ThemeState? fromJson(Map<String, dynamic> json) => ThemeState.fromMap(
+        json,
+        textTheme,
+      );
 
   @override
   Map<String, dynamic>? toJson(ThemeState state) => state.toMap();
